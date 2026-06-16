@@ -12,7 +12,7 @@ logs/
 npm-debug.log*
 
 # Завантажені фото страв (генеруються через адмін-панель, не частина коду)
-public/images/dishes/*
+# public/images/dishes/*
 !public/images/dishes/.gitkeep
 
 # Системні файли Windows
