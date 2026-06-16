@@ -1,0 +1,38 @@
+# Залежності Node.js — встановлюються через npm install, у репозиторій не потрібні
+node_modules/
+
+# Секрети та локальні налаштування (пароль БД, SESSION_SECRET тощо)
+.env
+.env.*
+!.env.example
+
+# Логи та тимчасові файли запуску
+logs/
+*.log
+npm-debug.log*
+
+# Завантажені фото страв (генеруються через адмін-панель, не частина коду)
+public/images/dishes/*
+!public/images/dishes/.gitkeep
+
+# Системні файли Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Системні файли macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE / редактор — локальні налаштування користувача
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Кеш та coverage (якщо з’являться тести)
+coverage/
+.nyc_output/
+.cache/

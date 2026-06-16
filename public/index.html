@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Restoрант — Меню</title>
+</head>
+<body>
+    <header class="nav-panel">
+        <a href="/" class="logo">Resto<span>рант</span></a>
+
+        <div class="header-controls">
+            <div class="search-block">
+                <input type="text" id="searchInput" placeholder="Пошук страв...">
+                <button class="search-button" id="searchBtn" type="button">Знайти</button>
+            </div>
+
+            <div class="sort-block">
+                <label for="sortSelect" class="sort-label">Сортування</label>
+                <select id="sortSelect" class="sort-select">
+                    <option value="" selected>Сортування</option>
+                    <option value="name-asc">Назва А → Я</option>
+                    <option value="name-desc">Назва Я → А</option>
+                    <option value="price-asc">Ціна ↑</option>
+                    <option value="price-desc">Ціна ↓</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button class="icon-btn profile-btn" id="profileBtn" aria-label="Профіль">
+                <span class="btn-text">Профіль</span>
+            </button>
+            <button class="icon-btn cart-btn" id="cartBtn" aria-label="Кошик">
+                <span class="btn-text">Кошик</span>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+        </div>
+    </header>
+
+    <nav class="categories-bar">
+        <div class="categories-block" id="categoriesBlock">
+            <p class="categories-loading">Завантаження категорій...</p>
+        </div>
+    </nav>
+
+    <main class="page-main">
+        <section class="menu-section">
+            <div class="menu-header">
+                <div class="menu-slider" id="menuSlider">
+                    <button class="menu-slider__arrow" id="menuPrevBtn" type="button" aria-label="Попереднє меню">‹</button>
+                    <div class="menu-slider__info">
+                        <h1 class="menu-title" id="menuSliderTitle">Меню</h1>
+                        <p class="menu-subtitle" id="menuSliderCounter"></p>
+                    </div>
+                    <button class="menu-slider__arrow" id="menuNextBtn" type="button" aria-label="Наступне меню">›</button>
+                </div>
+            </div>
+
+            <div class="menu-book">
+                <div class="menu" id="menuGrid">
+                    <p class="menu-loading">Завантаження меню...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Підтвердження видалення акаунта -->
+    <div class="modal confirm-modal" id="deleteAccountModal">
+        <div class="modal-content">
+            <button class="modal-close" id="deleteAccountModalClose" aria-label="Закрити">✕</button>
+            <header class="modal-header">Видалити акаунт?</header>
+            <p class="confirm-text">Цю дію неможливо скасувати. Усі ваші замовлення та історія будуть видалені назавжди.</p>
+            <div class="btns-block confirm-btns">
+                <button class="btn-outline" id="cancelDeleteAccountBtn" type="button">Скасувати</button>
+                <button class="btn-danger" id="confirmDeleteAccountBtn" type="button">Видалити</button>
+            </div>
+            <p class="form-error" id="deleteAccountError"></p>
+        </div>
+    </div>
+
+    <!-- Модалка авторизації -->
+    <div class="modal auth-modal" id="authModal">
+        <div class="modal-content">
+            <button class="modal-close" id="authModalClose" aria-label="Закрити">✕</button>
+            <header class="modal-header" id="authModalHeader">Вхід</header>
+            <main class="modal-main" id="authModalMain"></main>
+            <p class="form-error" id="authFormError"></p>
+        </div>
+    </div>
+
+    <!-- Модалка деталей страви -->
+    <div class="modal dish-modal" id="dishModal">
+        <div class="modal-content modal-content--wide">
+            <button class="modal-close" id="dishModalClose" aria-label="Закрити">✕</button>
+            <div class="dish-modal-body" id="dishModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Оверлей -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Бокова панель профілю -->
+    <aside class="profile-sidebar" id="profileSidebar">
+        <div class="sidebar-header">
+            <h2>Мій профіль</h2>
+            <button class="close-sidebar" id="closeSidebar" aria-label="Закрити">✕</button>
+        </div>
+        <div class="sidebar-content">
+            <div class="profile-info-group">
+                <p class="info-label">Ім'я</p>
+                <p class="info-value" id="profileName">—</p>
+            </div>
+            <div class="profile-info-group">
+                <p class="info-label">Email</p>
+                <p class="info-value" id="profileEmail">—</p>
+            </div>
+            <div class="profile-info-group">
+                <p class="info-label">Телефон</p>
+                <p class="info-value" id="profileNumber">—</p>
+            </div>
+            <div class="profile-info-group">
+                <p class="info-label">Роль</p>
+                <p class="info-value" id="profileRole">—</p>
+            </div>
+            <button class="btn-outline order-history-btn" id="orderHistoryBtn" type="button">Історія замовлень</button>
+            <button class="btn-danger delete-account-btn" id="deleteAccountBtn" type="button">Видалити акаунт</button>
+            <button class="btn-gold logout-btn" id="logoutBtn">Вийти з акаунта</button>
+        </div>
+    </aside>
+
+    <!-- Бокова панель кошика -->
+    <aside class="cart-sidebar" id="cartSidebar">
+        <div class="sidebar-header">
+            <h2>Кошик</h2>
+            <button class="close-sidebar" id="closeCartSidebar" aria-label="Закрити">✕</button>
+        </div>
+        <div class="sidebar-content cart-content" id="cartContent">
+            <p class="cart-empty">Кошик порожній</p>
+        </div>
+        <div class="cart-footer">
+            <div class="delivery-type-block" id="deliveryTypeBlock" hidden>
+                <p class="delivery-type-label">Тип доставки</p>
+                <div class="delivery-type-options">
+                    <label class="delivery-option">
+                        <input type="radio" name="deliveryType" value="pickup" checked>
+                        <span>Самовивіз</span>
+                    </label>
+                    <label class="delivery-option">
+                        <input type="radio" name="deliveryType" value="courier">
+                        <span>Кур'єром</span>
+                    </label>
+                    <label class="delivery-option">
+                        <input type="radio" name="deliveryType" value="dine_in">
+                        <span>В ресторані</span>
+                    </label>
+                </div>
+            </div>
+            <div class="payment-type-block" id="paymentTypeBlock" hidden>
+                <p class="delivery-type-label">Тип оплати</p>
+                <div class="delivery-type-options">
+                    <label class="delivery-option">
+                        <input type="radio" name="paymentType" value="card" checked>
+                        <span>Карткою</span>
+                    </label>
+                    <label class="delivery-option">
+                        <input type="radio" name="paymentType" value="cash">
+                        <span>Готівкою</span>
+                    </label>
+                </div>
+            </div>
+            <p class="cart-total">Разом: <span id="cartTotal">0</span> грн</p>
+            <button class="btn-gold checkout-btn" id="checkoutBtn" type="button" hidden>Оформити</button>
+        </div>
+    </aside>
+
+    <!-- Модалка історії замовлень -->
+    <div class="modal orders-modal" id="ordersModal">
+        <div class="modal-content modal-content--wide">
+            <button class="modal-close" id="ordersModalClose" aria-label="Закрити">✕</button>
+            <header class="modal-header">Історія замовлень</header>
+            <div class="orders-body" id="ordersBody">
+                <p class="orders-loading">Завантаження...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модалка чека -->
+    <div class="modal receipt-modal" id="receiptModal">
+        <div class="modal-content modal-content--receipt">
+            <button class="modal-close" id="receiptModalClose" aria-label="Закрити">✕</button>
+            <div class="receipt-scroll" id="receiptBody"></div>
+            <button class="btn-gold receipt-close-btn" id="receiptOkBtn" type="button" hidden>Зрозуміло</button>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

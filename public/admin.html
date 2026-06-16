@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="staff.css">
+    <title>Restoрант — Адмін-панель</title>
+</head>
+<body class="staff-page">
+    <header class="nav-panel staff-header">
+        <a href="/admin.html" class="logo">Resto<span>рант</span></a>
+        <div class="staff-header__actions">
+            <button class="icon-btn" id="adminPanelBtn" type="button">
+                <span class="btn-text">Адмін-панель</span>
+            </button>
+            <button class="icon-btn profile-btn" id="profileBtn" type="button">
+                <span class="btn-text">Профіль</span>
+            </button>
+        </div>
+    </header>
+
+    <nav class="staff-tabs" id="staffTabs">
+        <button class="staff-tab active" data-filter="new" type="button">
+            Список замовлень
+            <span class="staff-tab__badge" id="badgeNew" hidden>0</span>
+        </button>
+        <button class="staff-tab" data-filter="preparing" type="button">
+            В процесі приготування
+            <span class="staff-tab__badge" id="badgePreparing" hidden>0</span>
+        </button>
+        <button class="staff-tab" data-filter="waiting_for_delivery" type="button">
+            Очікує доставки
+            <span class="staff-tab__badge staff-tab__badge--warn" id="badgeWaiting" hidden>0</span>
+        </button>
+        <button class="staff-tab" data-filter="delivering" type="button">
+            Доставляється
+            <span class="staff-tab__badge" id="badgeDelivering" hidden>0</span>
+        </button>
+        <button class="staff-tab" data-filter="delivered_today" type="button">
+            Доставлені сьогодні
+            <span class="staff-tab__badge" id="badgeDeliveredToday" hidden>0</span>
+        </button>
+    </nav>
+
+    <main class="staff-main">
+        <div class="staff-content" id="staffContent">
+            <p class="staff-loading">Завантаження...</p>
+        </div>
+    </main>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="profile-sidebar" id="profileSidebar">
+        <div class="sidebar-header">
+            <h2>Профіль</h2>
+            <button class="close-sidebar" id="closeProfileSidebar" type="button">✕</button>
+        </div>
+        <div class="sidebar-content">
+            <div class="profile-info-group">
+                <p class="info-label">Ім'я</p>
+                <p class="info-value" id="profileName">—</p>
+            </div>
+            <div class="profile-info-group">
+                <p class="info-label">Email</p>
+                <p class="info-value" id="profileEmail">—</p>
+            </div>
+            <button class="btn-outline" id="goHomeBtn" type="button">На головну</button>
+            <button class="btn-gold logout-btn" id="logoutBtn" type="button">Вийти</button>
+        </div>
+    </aside>
+
+    <aside class="dish-panel" id="dishPanel">
+        <div class="sidebar-header">
+            <h2>Адмін-панель</h2>
+            <button class="close-sidebar" id="closeDishPanel" type="button">✕</button>
+        </div>
+        <div class="admin-panel-tabs">
+            <button class="admin-panel-tab active" id="adminTabMenu" type="button">Меню</button>
+            <button class="admin-panel-tab" id="adminTabStaff" type="button">Персонал</button>
+        </div>
+        <div class="dish-panel__content" id="adminMenuSection">
+            <button class="btn-gold" id="addDishBtn" type="button">Додати страву</button>
+            <div id="dishAdminList" class="dish-admin-list"></div>
+        </div>
+        <div class="dish-panel__content" id="adminStaffSection" hidden>
+            <button class="btn-gold" id="addStaffBtn" type="button">Додати працівника</button>
+            <div id="staffAdminList" class="staff-admin-list"></div>
+        </div>
+    </aside>
+
+    <div class="modal" id="orderModal">
+        <div class="modal-content modal-content--wide">
+            <button class="modal-close" id="orderModalClose" type="button">✕</button>
+            <header class="modal-header" id="orderModalTitle">Замовлення</header>
+            <div id="orderModalBody"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="dishFormModal">
+        <div class="modal-content">
+            <button class="modal-close" id="dishFormClose" type="button">✕</button>
+            <header class="modal-header" id="dishFormTitle">Страва</header>
+            <form class="staff-form" id="dishForm">
+                <input type="hidden" id="dishFormId">
+                <input type="text" id="dishName" placeholder="Назва" required>
+                <textarea id="dishDesc" placeholder="Опис" required></textarea>
+                <input type="number" id="dishPrice" placeholder="Ціна" min="0" step="0.01" required>
+                <div class="dish-image-field">
+                    <p class="dish-image-label">Фото страви</p>
+                    <div class="dish-image-preview" id="dishImagePreview">
+                        <p class="dish-image-preview__placeholder">Попередній перегляд</p>
+                    </div>
+                    <input type="file" id="dishImageFile" accept="image/*" hidden>
+                    <button class="btn-outline dish-image-pick-btn" id="dishImagePickBtn" type="button">Обрати фото з провідника</button>
+                </div>
+                <input type="hidden" id="dishExistingImage">
+                <select id="dishCategory" required></select>
+                <select id="dishMenu" required></select>
+                <button class="btn-gold" type="submit">Зберегти</button>
+            </form>
+            <p class="form-error" id="dishFormError"></p>
+        </div>
+    </div>
+
+    <div class="modal" id="staffFormModal">
+        <div class="modal-content">
+            <button class="modal-close" id="staffFormClose" type="button">✕</button>
+            <header class="modal-header" id="staffFormTitle">Новий працівник</header>
+            <form class="staff-form" id="staffForm">
+                <input type="hidden" id="staffFormId">
+                <input type="text" id="staffName" placeholder="Ім'я" required>
+                <input type="email" id="staffEmail" placeholder="Email" required>
+                <input type="tel" id="staffNumber" placeholder="Номер телефону" required>
+                <input type="password" id="staffPassword" placeholder="Пароль (мін. 6 символів)">
+                <select id="staffRole" required>
+                    <option value="">Оберіть роль</option>
+                    <option value="cook">Кухар</option>
+                    <option value="courier">Кур'єр</option>
+                </select>
+                <button class="btn-gold" id="staffSubmitBtn" type="submit">Додати</button>
+            </form>
+            <p class="form-error" id="staffFormError"></p>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

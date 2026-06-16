@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Dish</title>
+    
+</head>
+<body>
+    <header class="nav-panel">
+        <div class="logo">Restoрант</div>
+    </header>
+    <main>
+        <div class="dish-form">
+            
+            <div class="dish-photo" id="photoContainer">
+                <span id="photoPlaceholder">Натисніть, щоб обрати фото</span>
+                <img id="photoPreview" src="" alt="Прев'ю страви">
+            </div>
+            
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+
+            <div class="content">
+                <input type="text" placeholder="Назва страви">
+                <input type="number" placeholder="Ціна">
+                <select class="category-select">
+                    <option value="" disabled selected>Оберіть категорію</option>
+                    <option value="dessert">Десерти</option>
+                    <option value="drink">Напої</option>
+                </select>
+                <textarea placeholder="Опис"></textarea>
+            </div>
+            <button>Зберегти</button>
+        </div>
+    </main>
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => requireAuth());
+    </script>
+</body>
+</html>
